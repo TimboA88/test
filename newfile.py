@@ -1,8 +1,11 @@
 import csv
 import pygame
+import sys
+
 pygame.init()
 pygame.mixer.init()
-import sys
+
+
 battle = pygame.mixer.Sound("battle.ogg")
 vicfanfare = pygame.mixer.Sound("victoryfanfare.wav")
 slorp = pygame.mixer.Sound("potiondrink.wav")

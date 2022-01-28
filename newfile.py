@@ -1,6 +1,7 @@
 import csv
 import pygame
 import sys
+import random
 
 pygame.init()
 pygame.mixer.init()
@@ -13,7 +14,7 @@ monah = pygame.mixer.Sound("chaching.wav")
 playerfile = "player.data"
 die = pygame.mixer.Sound("wilhelm.wav")
 
-import random
+#check to see if there were any command line arguments, like debug mode
 arguments = []
 arguments = sys.argv[1:]
 try:
@@ -22,7 +23,9 @@ try:
 except:
 	arguments = ['normal']
 
+#define an object class we are calling Pokemon
 class Pokemon:
+	#variables
 	def __init__(self, name, hitpoints, potions, strength, exp, defence, gold):
 		self.name = name
 		self.hitpoints = hitpoints
@@ -33,12 +36,12 @@ class Pokemon:
 		self.defence = defence
 		self.natdefence = defence
 		self.gold = gold
+
+	#methods	
 	def attack(self, attacker, defender):
 		defender.hitpoints = defender.hitpoints - attacker.strength / defender.defence
 		print(attacker.name + " attacks for " + str(attacker.strength/defender.defence))
 		defender.defence = defender.natdefence
-#		attacksound.play()
-
 
 	def defend(self, defen):
 		defen.defence = defen.defence + 1
@@ -55,6 +58,10 @@ class Pokemon:
 			user.potions = user.potions - 1
 		else:
 			print("You don't have any potions.")
+
+
+
+#define functions
 
 def shop(player):
 	sho = True

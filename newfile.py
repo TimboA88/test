@@ -6,7 +6,7 @@ pygame.init()
 pygame.mixer.init()
 
 
-battle = pygame.mixer.Sound("battle.ogg")
+battle = pygame.mixer.Sound("battle.wav")
 vicfanfare = pygame.mixer.Sound("victoryfanfare.wav")
 slorp = pygame.mixer.Sound("potiondrink.wav")
 monah = pygame.mixer.Sound("chaching.wav")

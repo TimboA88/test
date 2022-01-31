@@ -118,7 +118,7 @@ while lop:
 			idle = False
 			lop = False
 
-
+#This defines the battle and needs to be changed into a function
 	turns = 0
 	while lo:
 		if turns == 0:
@@ -162,6 +162,8 @@ while lop:
 				#monster.attack(monster,player)
 				#for badguy in monsters
 					badguy.attack(badguy,player)
+
+#This states that the battle is over and manages after battle updates relating to leveling up and updating character changes from the battle.
 	battle.stop()
 	if Victory == True:
 		vicfanfare.play()

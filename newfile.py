@@ -14,7 +14,7 @@ monah = pygame.mixer.Sound("chaching.wav")
 playerfile = "player.data"
 die = pygame.mixer.Sound("wilhelm.wav")
 
-#check to see if there were any command line arguments, like debug mode
+#check to see if there were any command line arguments, like debug mode adding a test comment
 arguments = []
 arguments = sys.argv[1:]
 try:

@@ -2,7 +2,7 @@ import csv
 import pygame
 import sys
 import random
-
+lo = True
 pygame.init()
 pygame.mixer.init()
 
@@ -23,8 +23,8 @@ try:
 except:
 	arguments = ['normal']
 
-#define an object class we are calling Pokemon
-class Pokemon:
+#define an object class we are calling Fightman
+class Fightman:
 	#variables
 	def __init__(self, name, hitpoints, potions, strength, exp, defence, gold):
 		self.name = name
@@ -75,51 +75,10 @@ def shop(player):
 			monah.play()
 		if shp == '2':
 			sho = False
-lop = True
-while lop:
-	Victory = False
-	ghp = random.randrange(80,120)
-	gpot = random.randrange(1,3)
-	gstr = random.randrange(8,10)
-	gexp = 0
-	gnatdef = 1
-	ggold = random.randrange(10,50)
 
-	file = open(playerfile,newline='')
-	reader = csv.reader(file)
-	data = []
-	for row in reader: 
-#outfilewriter.writerow([player.name,player.maxhitpoints,player.potions,player.strength,player.exp,player.defence,player.gold])
-		pname = row[0]
-		php = int(row[1])
-		ppot = int(row[2])
-		pstr = int(row[3])
-		pexp = int(row[4])
-		pnatdef = int(row[5])
-		pgold = int(row[6])
-	file.close()
-#player = Pokemon('Pikachu',100,3,10,0, 1, 0)
-	monsters = []
-	player = Pokemon(pname,php,ppot,pstr,pexp, pnatdef, pgold)
-	monster = Pokemon('Greg', ghp, gpot, gstr, gexp, gnatdef, ggold)
-	monsters.append(monster)
-#	monsters.append(Pokemon('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
- 
-	lo = False
-	idle = True
-	while idle:
-		pq = input("Do you wish to go to the potion shop[1] or Fight monsters [2] or Quit [3]")
-		if pq == '1':
-			shop(player)
-		if pq == '2':
-			lo = True
-			idle = False
-		if pq == '3':
-			idle = False
-			lop = False
-
-
+def bgft(player,monster):
 	turns = 0
+	lo = True
 	while lo:
 		if turns == 0:
 			battle.play()  #plays battle sound music
@@ -159,9 +118,101 @@ while lop:
 				if badguy.hitpoints <= badguy.maxhitpoints/3 and badguy.potions > 0:
 					badguy.heal(badguy)
 				else:
+					print("")
 				#monster.attack(monster,player)
 				#for badguy in monsters
-					badguy.attack(badguy,player)
+
+
+lop = True
+while lop:
+	Victory = False
+	ghp = random.randrange(80,120)
+	gpot = random.randrange(1,3)
+	gstr = random.randrange(8,10)
+	gexp = 0
+	gnatdef = 1
+	ggold = random.randrange(10,50)
+
+	file = open(playerfile,newline='')
+	reader = csv.reader(file)
+	data = []
+	for row in reader: 
+#outfilewriter.writerow([player.name,player.maxhitpoints,player.potions,player.strength,player.exp,player.defence,player.gold])
+		pname = row[0]
+		php = int(row[1])
+		ppot = int(row[2])
+		pstr = int(row[3])
+		pexp = int(row[4])
+		pnatdef = int(row[5])
+		pgold = int(row[6])
+	file.close()
+#player = Fightman('Pikachu',100,3,10,0, 1, 0)
+	monsters = []
+	player = Fightman(pname,php,ppot,pstr,pexp, pnatdef, pgold)
+	monster = Fightman('Greg', ghp, gpot, gstr, gexp, gnatdef, ggold)
+	monsters.append(monster)
+#	monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
+ 
+	lo = False
+	idle = True
+	while idle:
+		pq = input("Do you wish to go to the potion shop[1] or Fight monsters [2] or Quit [3]")
+		if pq == '1':
+			shop(player)
+		if pq == '2':
+			lo = True
+			idle = False
+		if pq == '3':
+			idle = False
+			lop = False
+
+#This defines the battle and needs to be changed into a function
+	bgft(player, monster)
+#	turns = 0
+#	while lo:
+#		if turns == 0:
+#			battle.play()  #plays battle sound music
+#			print(player.name + " Vs " + monster.name)
+#			print(monster.name + " max hp is: " + str(monster.hitpoints) + "| max potions is " + str(monster.potions) + "| strength is " + str(monster.strength))
+#
+#		print("You have " + str(player.hitpoints) +  " out of  "  +  str(player.maxhitpoints)) 
+#		i = input("Attack(1), Potion(2), Defend(3), or Flee(4) ")
+#		turns = turns + 1
+#		if i == '1':
+#			player.attack(player,monster)
+#			print(monster.hitpoints)
+#		if i == '2':
+#			player.heal(player)
+#
+#		if i == '3':
+#			player.defend(player)
+#		if i == '4':
+#			lo = False
+#		if i == '5' and arguments[0] == 'debug':
+#			monster.hitpoints = 0
+#		if player.hitpoints <= 0:
+#			die.play()
+#			lo = False
+#			print("You Lose")
+#			monster.exp = monster.exp + 25
+#		if monster.hitpoints <= 0:
+#			die.play()
+#			lo = False
+#			player.exp = player.exp + 25
+#			player.gold = player.gold + monster.gold
+#			print(player.name + " gained 25 exp and now has " + str(player.exp))
+#			print(player.name + " gained " + str(monster.gold) + "  gold and now has " + str(player.gold))
+#			Victory = True
+#		if lo:
+#			for badguy in monsters:
+#				if badguy.hitpoints <= badguy.maxhitpoints/3 and badguy.potions > 0:
+#					badguy.heal(badguy)
+#				else:
+#				#monster.attack(monster,player)
+#				#for badguy in monsters
+#					badguy.attack(badguy,player)
+
+#This states that the battle is over and manages after battle updates relating to leveling up and updating character changes from the battle.
 	battle.stop()
 	if Victory == True:
 		vicfanfare.play()

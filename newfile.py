@@ -168,51 +168,7 @@ while lop:
 
 #This defines the battle and needs to be changed into a function
 	bgft(player, monster)
-#	turns = 0
-#	while lo:
-#		if turns == 0:
-#			battle.play()  #plays battle sound music
-#			print(player.name + " Vs " + monster.name)
-#			print(monster.name + " max hp is: " + str(monster.hitpoints) + "| max potions is " + str(monster.potions) + "| strength is " + str(monster.strength))
-#
-#		print("You have " + str(player.hitpoints) +  " out of  "  +  str(player.maxhitpoints)) 
-#		i = input("Attack(1), Potion(2), Defend(3), or Flee(4) ")
-#		turns = turns + 1
-#		if i == '1':
-#			player.attack(player,monster)
-#			print(monster.hitpoints)
-#		if i == '2':
-#			player.heal(player)
-#
-#		if i == '3':
-#			player.defend(player)
-#		if i == '4':
-#			lo = False
-#		if i == '5' and arguments[0] == 'debug':
-#			monster.hitpoints = 0
-#		if player.hitpoints <= 0:
-#			die.play()
-#			lo = False
-#			print("You Lose")
-#			monster.exp = monster.exp + 25
-#		if monster.hitpoints <= 0:
-#			die.play()
-#			lo = False
-#			player.exp = player.exp + 25
-#			player.gold = player.gold + monster.gold
-#			print(player.name + " gained 25 exp and now has " + str(player.exp))
-#			print(player.name + " gained " + str(monster.gold) + "  gold and now has " + str(player.gold))
-#			Victory = True
-#		if lo:
-#			for badguy in monsters:
-#				if badguy.hitpoints <= badguy.maxhitpoints/3 and badguy.potions > 0:
-#					badguy.heal(badguy)
-#				else:
-#				#monster.attack(monster,player)
-#				#for badguy in monsters
-#					badguy.attack(badguy,player)
 
-#This states that the battle is over and manages after battle updates relating to leveling up and updating character changes from the battle.
 	battle.stop()
 	if Victory == True:
 		vicfanfare.play()

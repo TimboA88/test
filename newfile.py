@@ -2,16 +2,22 @@ import csv
 import pygame
 import sys
 import random
+
+#why is this here?
 lo = True
+
+#initalize the pygame engine, needs to be done before loading assets.
 pygame.init()
 pygame.mixer.init()
 
+#filename needs to be specified sometime before the playerfile is LOADED or SAVED.
+playerfile = "player.data"
 
+#loads assets
 battle = pygame.mixer.Sound("battle.wav")
 vicfanfare = pygame.mixer.Sound("victoryfanfare.wav")
 slorp = pygame.mixer.Sound("potiondrink.wav")
 monah = pygame.mixer.Sound("chaching.wav")
-playerfile = "player.data"
 die = pygame.mixer.Sound("wilhelm.wav")
 
 #check to see if there were any command line arguments, like debug mode adding a test comment
@@ -70,12 +76,23 @@ def shop(players):
 		print("Welcome to the shop " + players[0].name + "!")
 		print("You have " + str(players[0].gold) + " gold.")
 		print("You have " + str(players[0].potions) + " potions.")
-		shp = input("Buy [1] or Leave [2]")
+		shp = input("Buy Potions[1] - Buy Bait [2] - Leave Store [3]")
 		if shp == '1' and players[0].gold > 25:
 			players[0].gold = players[0].gold - 25
 			players[0].potions = players[0].potions + 1
 			monah.play()
 		if shp == '2':
+			#uncommenting this code will not implement the change. 
+			#your homework is toto actually make a function that does these things
+			#1.)create a new monster
+			#2.)append it to the list of monsters.
+			#3.)charge the player some amount of money.
+			#4.) make sure they have enough money to do it.
+			# here is some code that you wrote earlier that might help you 
+			##monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
+			##players[0] = Fightman('Pikachu',100,3,10,0, 1, 0) 
+			pass
+		if shp == '3':
 			sho = False
 
 def bgft(players,monster):
@@ -118,6 +135,7 @@ def bgft(players,monster):
 		if i == '4':
 			lo = False
 		if i == '5': #and arguments[0] == 'debug':
+			#or you could remove the bad guys from the list later on
 			for badguys in monsters:
 				badguys.hitpoints = 0
 			Victory = True
@@ -127,6 +145,7 @@ def bgft(players,monster):
 			print("You Lose")
 			monster.exp = monster.exp + 25
 		if monsters[0].hitpoints <= 0:
+			# after each monster dies, make sure that as they die, they get removed from the list. you're eventually going to have to do this.
 			die.play()
 			players[0].exp = players[0].exp + 25
 			players[0].gold = players[0].gold + monsters[0].gold
@@ -134,28 +153,42 @@ def bgft(players,monster):
 			print(players[0].name + " gained " + str(monsters[0].gold) + "  gold and now has " + str(players[0].gold))
 			Victory = True
 			lo = False
+
 		if lo:
+			#as long as we're still fighting, it's the monster's turn to attack!
 			for badguy in monsters:
 				if badguy.hitpoints <= badguy.maxhitpoints/3 and badguy.potions > 0:
+					#artificial inteligence
 					badguy.heal(badguy)
 				else:
 					print("")
-				#monster.attack(monster,players[0])
-				#for badguy in monsters
+				#badguy.attack(badguy,players[0])
+				#i think we disabled this when we were debugging. this is where the monster should be hitting you back. 
+				
+
 
 
 Victory = False
+
+#this randomizes the new monsters hitpoints and gold, and anything else you want
 ghp = random.randrange(80,120)
 gpot = random.randrange(1,3)
 gstr = random.randrange(8,10)
 gexp = 0
 gnatdef = 1
 ggold = random.randrange(10,50)
+
+
+#this reads in the playerfile, turn it into a function and make sure that it gets called before the main loop.
 file = open(playerfile,newline='')
 reader = csv.reader(file)
+
+#i'm not sure what this data list is for it's not being used as far as i can tell i think you can delete it.
 data = []
-for row in reader: 
+
+#these are the things you are writing to the playerfile
 #outfilewriter.writerow([players[0].name,players[0].maxhitpoints,players[0].potions,players[0].strength,players[0].exp,players[0].defence,players[0].gold])
+for row in reader: 
 	pname = row[0]
 	php = int(row[1])
 	ppot = int(row[2])
@@ -164,17 +197,39 @@ for row in reader:
 	pnatdef = int(row[5])
 	pgold = int(row[6])
 file.close()
+#this is the end of the reading player file in.
 
-#players[0] = Fightman('Pikachu',100,3,10,0, 1, 0)
+
+#players[0] = Fightman('Pikachu',100,3,10,0, 1, 0) 
+# ?name=pikachu&maxhp=100&potions=3&strength=10&exp=0&natdef=1&gold=100
+
+#name:pikachu
+#maxhp:100
+#potions:3
+#strength:10
+#exp:10
+#natdef:1
+#gold:100
+
+#create an empty list of monsters and players
 monsters = []
 players = []
+
+#create temporary player and monster
 tempplayer = Fightman(pname,php,ppot,pstr,pexp, pnatdef, pgold)
 tempmonster = Fightman('Greg', ghp, gpot, gstr, gexp, gnatdef, ggold)
+
+#do you still need this one???? i hope not! remove it sometime and find out.
 monster = Fightman('Greg', ghp, gpot, gstr, gexp, gnatdef, ggold)
+
+#add temp monster and player to their respective lists.
 monsters.append(tempmonster)
 players.append(tempplayer)
-monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
 
+
+#monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
+
+#main outer loop begin
 lop = True
 while lop:
 	Victory = False
@@ -198,6 +253,7 @@ while lop:
 		pgold = int(row[6])
 	file.close()
  
+	#main inner loop
 	lo = False
 	idle = True
 	while idle:
@@ -212,23 +268,37 @@ while lop:
 			idle = False
 			lop = False
 
-#This defines the battle and needs to be changed into a function
-	#bgft(players, monsters)
-	temphp = 0
+
+    #stops the pokemon battle music.
 	battle.stop()
+	
+	
+	temphp = 0
+	
+	#there should only be one guy in the list at this point if you removed them from the list as they died!
 	for badguys in monsters:
 		temphp = temphp + badguys.hitpoints 
 	print(temphp)
 	if temphp >= 0:
 		vicfanfare.play()
+
+
+	#the player gained enough experience to level up
+	#turn this into a function.
 	if players[0].exp >= 200:
 		players[0].exp = 0
 		players[0].strength = players[0].strength + 1
 		players[0].maxhitpoints = players[0].maxhitpoints + random.randrange(5,15) 
 		print(players[0].name + " leveled up! " + players[0].name + " now has " + str(players[0].strength) + " stength! And now has " + str(players[0].maxhitpoints) + " Maxhitpoints") 
+	
+	
+	
 	qt = input("Press any buton to continue")
 	vicfanfare.stop()
 
+	
+	# writes the playerfile
+	#turn this into a function
 	outfile = open(playerfile,'w')
 	outfilewriter = csv.writer(outfile,delimiter=',',lineterminator='')
 	#outfilewriter.writerow(["name","Hp","Potion","Strength","Exp","Nat Defense","money"])

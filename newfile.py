@@ -153,14 +153,18 @@ def bgft(players,monster):
 			print(players[0].name + " gained " + str(monsters[0].gold) + "  gold and now has " + str(players[0].gold))
 			Victory = True
 			lo = False
+
 		if lo:
+			#as long as we're still fighting, it's the monster's turn to attack!
 			for badguy in monsters:
 				if badguy.hitpoints <= badguy.maxhitpoints/3 and badguy.potions > 0:
+					#artificial inteligence
 					badguy.heal(badguy)
 				else:
 					print("")
-				#monster.attack(monster,players[0])
-				#for badguy in monsters
+				#badguy.attack(badguy,players[0])
+				#i think we disabled this when we were debugging. this is where the monster should be hitting you back. 
+				
 
 
 
@@ -225,6 +229,7 @@ players.append(tempplayer)
 
 #monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
 
+#main outer loop begin
 lop = True
 while lop:
 	Victory = False
@@ -248,6 +253,7 @@ while lop:
 		pgold = int(row[6])
 	file.close()
  
+	#main inner loop
 	lo = False
 	idle = True
 	while idle:
@@ -262,10 +268,13 @@ while lop:
 			idle = False
 			lop = False
 
-#This defines the battle and needs to be changed into a function
-	#bgft(players, monsters)
-	temphp = 0
+
+    #stops the pokemon battle music.
 	battle.stop()
+	
+	
+	temphp = 0
+	
 	#there should only be one guy in the list at this point if you removed them from the list as they died!
 	for badguys in monsters:
 		temphp = temphp + badguys.hitpoints 

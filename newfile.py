@@ -2,9 +2,14 @@ import csv
 import pygame
 import sys
 import random
+import requests
+import json
+from  random import randint
+import time
 
 #why is this here?
 lo = True
+
 
 #initalize the pygame engine, needs to be done before loading assets.
 pygame.init()
@@ -43,6 +48,7 @@ class Fightman:
 		self.defence = defence
 		self.natdefence = defence
 		self.gold = gold
+		self.baits = 0
 
 	#methods	
 	def attack(self, attacker, defender):
@@ -76,12 +82,16 @@ def shop(players):
 		print("Welcome to the shop " + players[0].name + "!")
 		print("You have " + str(players[0].gold) + " gold.")
 		print("You have " + str(players[0].potions) + " potions.")
+		print("You have " + str(players[0].baits) + " baits.")
 		shp = input("Buy Potions[1] - Buy Bait [2] - Leave Store [3]")
 		if shp == '1' and players[0].gold > 25:
 			players[0].gold = players[0].gold - 25
 			players[0].potions = players[0].potions + 1
 			monah.play()
-		if shp == '2':
+		if shp == '2' and players[0].gold > 25:
+			players[0].gold = players[0].gold - 25
+			players[0].baits = players[0].baits + 1
+			print("you now have " + str(players[0].baits) + " baits" )
 			#uncommenting this code will not implement the change. 
 			#your homework is toto actually make a function that does these things
 			#1.)create a new monster
@@ -89,15 +99,24 @@ def shop(players):
 			#3.)charge the player some amount of money.
 			#4.) make sure they have enough money to do it.
 			# here is some code that you wrote earlier that might help you 
-			##monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
+			
+			#if you make a request to
+			#https://namey.muffinlabs.com/name.json1
+
+			#it returns a random name!
+			
 			##players[0] = Fightman('Pikachu',100,3,10,0, 1, 0) 
+			##monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
+			
 			pass
 		if shp == '3':
 			sho = False
+		
 
 def bgft(players,monster):
 	turns = 0
 	lo = True
+
 	while lo:
 		if turns == 0:
 			battle.play()  #plays battle sound music
@@ -256,6 +275,7 @@ while lop:
 	#main inner loop
 	lo = False
 	idle = True
+	
 	while idle:
 		pq = input("Do you wish to go to the potion shop[1] or Fight monsters [2] or Quit [3]")
 		if pq == '1':
@@ -263,6 +283,43 @@ while lop:
 		if pq == '2':
 			lo = True
 			idle = False
+		
+
+
+			url = 'https://namey.muffinlabs.com/name.json?type=first&frequency=RARE&count='+str(players[0].baits)
+			req = requests.get(url)
+			fnames = req.text
+			firstnames = json.loads(fnames)
+
+			#get some random insult https://evilinsult.com/generate_insult.php?lang=en&type=json
+			url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
+			req = requests.get(url)
+			fnames = req.text
+			insult = json.loads(fnames)
+
+			print("you unpack all " + str(players[0].baits) + " of your baits and a few enemies appear!") 
+			for x in range(0, players[0].baits):
+				
+				
+				ghp = random.randrange(80,120)
+				gpot = random.randrange(1,3)
+				gstr = random.randrange(8,10)
+				gexp = 0
+				gnatdef = 1
+				ggold = random.randrange(10,50)
+				tempmonster = Fightman(firstnames[x], ghp, gpot, gstr, gexp, gnatdef, ggold)
+				print( "hello I am " + firstnames[x] + " " + insult['insult'])
+				monsters.append(tempmonster)
+				#get some random insult https://evilinsult.com/generate_insult.php?lang=en&type=json
+				url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
+				time.sleep(1)
+				req = requests.get(url)
+				newinsult = req.text
+				insult = json.loads(newinsult)
+				
+
+			players[0].baits = 0
+			print(players[0].baits)
 			bgft(players, monsters)
 		if pq == '3':
 			idle = False

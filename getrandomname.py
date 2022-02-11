@@ -19,15 +19,19 @@ mnames = req.text
 middlenames = json.loads(mnames)
 
 
-a = randint(0,9)
-b = randint(0,9)
-c = randint(0,9)
+#a = randint(0,9)
+#b = randint(0,9)
+#c = randint(0,9)
 
-print(firstnames[a])
-print(middlenames[b])
-print(surnames[c])
+#print(firstnames[a])
+#print(middlenames[b])
+#print(surnames[c])
 
+print(firstnames[2] + " " + surnames[5])
 
+monstername = (firstnames[2] + " " + surnames[5])
+
+print(monstername)
 
 
 

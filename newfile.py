@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from contextlib import nullcontext
 import csv
 import pygame
 import sys
@@ -257,13 +259,20 @@ def HeroprintQuote(s, firstnames):
 	print(s['insult'])
 
 def requestQuote(monster, callback):
-    #get some random quote
-    url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
-    req = requests.get(url)
-    fnames = req.text
-    insult = json.loads(fnames)
-    #now call the function using the insult.
-    callback(insult, monster)
+	req = NULL
+	fnames = NULL
+	insult = NULL
+	url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
+	req = requests.get(url)
+	fnames = req.text
+	insult = json.loads(fnames)
+	callback(insult, monster)
+	req = NULL
+	fnames = NULL
+	insult = NULL
+
+
+
 
 if __name__ == '__main__':
 
@@ -308,7 +317,9 @@ if __name__ == '__main__':
 				req = requests.get(url)
 				fnames = req.text
 				firstnames = json.loads(fnames)
-
+				req = NULL
+				fnames = NULL
+			
 				requestQuote(monsters[0], printQuote)
 				if players[0].baits > 0:
 					print("you unpack all " + str(players[0].baits) + " of your baits and a few enemies appear!") 

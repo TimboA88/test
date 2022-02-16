@@ -120,8 +120,8 @@ def bgft(players,monster):
 	while lo:
 		if turns == 0:
 			battle.play()  #plays battle sound music
-			print(players)
-			print(players[0].name + " Vs Team " + monsters[0].name)
+		#	print(players)
+		#	print(players[0].name + " Vs Team " + monsters[0].name)
 			for badguys in monsters:
 				print(badguys.name + " max hp is: " + str(badguys.hitpoints) + "| max potions is " + str(badguys.potions) + "| strength is " + str(badguys.strength))
 
@@ -249,115 +249,124 @@ players.append(tempplayer)
 #monsters.append(Fightman('Chad',ghp,gpot,gstr,gexp,gnatdef,ggold))
 
 #main outer loop begin
-lop = True
-while lop:
-	Victory = False
-	ghp = random.randrange(80,120)
-	gpot = random.randrange(1,3)
-	gstr = random.randrange(8,10)
-	gexp = 0
-	gnatdef = 1
-	ggold = random.randrange(10,50)
-	file = open(playerfile,newline='')
-	reader = csv.reader(file)
-	data = []
-	for row in reader: 
-#outfilewriter.writerow([players[0].name,players[0].maxhitpoints,players[0].potions,players[0].strength,players[0].exp,players[0].defence,players[0].gold])
-		pname = row[0]
-		php = int(row[1])
-		ppot = int(row[2])
-		pstr = int(row[3])
-		pexp = int(row[4])
-		pnatdef = int(row[5])
-		pgold = int(row[6])
-	file.close()
- 
-	#main inner loop
-	lo = False
-	idle = True
+
+def printQuote(s, firstnames):
+    #now that it's finished, print it
+    print( "hello I am " + str(firstnames.name) + " " + s['insult'])
+def HeroprintQuote(s, firstnames):
+	print(s['insult'])
+
+def requestQuote(monster, callback):
+    #get some random quote
+    url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
+    req = requests.get(url)
+    fnames = req.text
+    insult = json.loads(fnames)
+    #now call the function using the insult.
+    callback(insult, monster)
+
+if __name__ == '__main__':
+
+	lop = True
+	while lop:
+		Victory = False
+		ghp = random.randrange(80,120)
+		gpot = random.randrange(1,3)
+		gstr = random.randrange(8,10)
+		gexp = 0
+		gnatdef = 1
+		ggold = random.randrange(10,50)
+		file = open(playerfile,newline='')
+		reader = csv.reader(file)
+		data = []
+		for row in reader: 
+	#outfilewriter.writerow([players[0].name,players[0].maxhitpoints,players[0].potions,players[0].strength,players[0].exp,players[0].defence,players[0].gold])
+			pname = row[0]
+			php = int(row[1])
+			ppot = int(row[2])
+			pstr = int(row[3])
+			pexp = int(row[4])
+			pnatdef = int(row[5])
+			pgold = int(row[6])
+		file.close()
 	
-	while idle:
-		pq = input("Do you wish to go to the potion shop[1] or Fight monsters [2] or Quit [3]")
-		if pq == '1':
-			shop(players)
-		if pq == '2':
-			lo = True
-			idle = False
+		#main inner loop
+		lo = False
+		idle = True
 		
+		while idle:
+			pq = input("Do you wish to go to the potion shop[1] or Fight monsters [2] or Quit [3]")
+			if pq == '1':
+				shop(players)
+			if pq == '2':
+				lo = True
+				idle = False
+			
 
 
-			url = 'https://namey.muffinlabs.com/name.json?type=first&frequency=RARE&count='+str(players[0].baits)
-			req = requests.get(url)
-			fnames = req.text
-			firstnames = json.loads(fnames)
-
-			#get some random insult https://evilinsult.com/generate_insult.php?lang=en&type=json
-			url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
-			req = requests.get(url)
-			fnames = req.text
-			insult = json.loads(fnames)
-
-			print("you unpack all " + str(players[0].baits) + " of your baits and a few enemies appear!") 
-			for x in range(0, players[0].baits):
-				
-				
-				ghp = random.randrange(80,120)
-				gpot = random.randrange(1,3)
-				gstr = random.randrange(8,10)
-				gexp = 0
-				gnatdef = 1
-				ggold = random.randrange(10,50)
-				tempmonster = Fightman(firstnames[x], ghp, gpot, gstr, gexp, gnatdef, ggold)
-				print( "hello I am " + firstnames[x] + " " + insult['insult'])
-				monsters.append(tempmonster)
-				#get some random insult https://evilinsult.com/generate_insult.php?lang=en&type=json
-				url = 'https://evilinsult.com/generate_insult.php?lang=en&type=json'
-				time.sleep(1)
+				url = 'https://namey.muffinlabs.com/name.json?type=first&frequency=RARE&count='+str(players[0].baits)
 				req = requests.get(url)
-				newinsult = req.text
-				insult = json.loads(newinsult)
-				
+				fnames = req.text
+				firstnames = json.loads(fnames)
 
-			players[0].baits = 0
-			print(players[0].baits)
-			bgft(players, monsters)
-		if pq == '3':
-			idle = False
-			lop = False
+				requestQuote(monsters[0], printQuote)
+				if players[0].baits > 0:
+					print("you unpack all " + str(players[0].baits) + " of your baits and a few enemies appear!") 
+					for x in range(0, players[0].baits):
+						
+						
+						ghp = random.randrange(80,120)
+						gpot = random.randrange(1,3)
+						gstr = random.randrange(8,10)
+						gexp = 0
+						gnatdef = 1
+						ggold = random.randrange(10,50)
+						tempmonster = Fightman(firstnames[x], ghp, gpot, gstr, gexp, gnatdef, ggold)
+						monsters.append(tempmonster)
+						requestQuote(tempmonster, printQuote)
+					
+
+				players[0].baits = 0
+				#print(players[0].baits)
+				bgft(players, monsters)
+			if pq == '3':
+				idle = False
+				lop = False
 
 
-    #stops the pokemon battle music.
-	battle.stop()
-	
-	
-	temphp = 0
-	
-	#there should only be one guy in the list at this point if you removed them from the list as they died!
-	for badguys in monsters:
-		temphp = temphp + badguys.hitpoints 
-	print(temphp)
-	if temphp >= 0:
-		vicfanfare.play()
+		#stops the pokemon battle music.
+		battle.stop()
+		
+		
+		temphp = 0
+		
+		#there should only be one guy in the list at this point if you removed them from the list as they died!
+		for badguys in monsters:
+			temphp = temphp + badguys.hitpoints 
+		#print(temphp)
+		if temphp >= 0:
+			vicfanfare.play()
+			requestQuote(players[0], HeroprintQuote)
 
 
-	#the player gained enough experience to level up
-	#turn this into a function.
-	if players[0].exp >= 200:
-		players[0].exp = 0
-		players[0].strength = players[0].strength + 1
-		players[0].maxhitpoints = players[0].maxhitpoints + random.randrange(5,15) 
-		print(players[0].name + " leveled up! " + players[0].name + " now has " + str(players[0].strength) + " stength! And now has " + str(players[0].maxhitpoints) + " Maxhitpoints") 
-	
-	
-	
-	qt = input("Press any buton to continue")
-	vicfanfare.stop()
+		#the player gained enough experience to level up
+		#turn this into a function.
+		if players[0].exp >= 200:
+			players[0].exp = 0
+			players[0].strength = players[0].strength + 1
+			players[0].maxhitpoints = players[0].maxhitpoints + random.randrange(5,15) 
+			print(players[0].name + " leveled up! " + players[0].name + " now has " + str(players[0].strength) + " stength! And now has " + str(players[0].maxhitpoints) + " Maxhitpoints") 
+		
+		
+		
+		qt = input("Press any buton to continue")
+		vicfanfare.stop()
 
-	
-	# writes the playerfile
-	#turn this into a function
-	outfile = open(playerfile,'w')
-	outfilewriter = csv.writer(outfile,delimiter=',',lineterminator='')
-	#outfilewriter.writerow(["name","Hp","Potion","Strength","Exp","Nat Defense","money"])
-	outfilewriter.writerow([players[0].name,players[0].maxhitpoints,players[0].potions,players[0].strength,players[0].exp,players[0].defence,players[0].gold])
-	outfile.close()
+		
+		# writes the playerfile
+		#turn this into a function
+		outfile = open(playerfile,'w')
+		outfilewriter = csv.writer(outfile,delimiter=',',lineterminator='')
+		#outfilewriter.writerow(["name","Hp","Potion","Strength","Exp","Nat Defense","money"])
+		outfilewriter.writerow([players[0].name,players[0].maxhitpoints,players[0].potions,players[0].strength,players[0].exp,players[0].defence,players[0].gold])
+		outfile.close()

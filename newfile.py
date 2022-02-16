@@ -259,6 +259,7 @@ def HeroprintQuote(s, firstnames):
 	print(s['insult'])
 
 def requestQuote(monster, callback):
+	#Fix this thing by comparing old insult to new one.
 	req = NULL
 	fnames = NULL
 	insult = NULL
